@@ -6,4 +6,5 @@ export declare class AuthService {
     private readonly userModel;
     constructor(jwtService: JwtService, configService: ConfigService);
     login(email: string, password: string): Promise<string>;
+    tokenIsValid(token: string): Promise<boolean>;
 }

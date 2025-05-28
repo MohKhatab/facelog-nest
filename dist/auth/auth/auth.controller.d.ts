@@ -7,4 +7,9 @@ export declare class AuthController {
         message: string;
         token: string;
     }>;
+    validateToken({ token }: {
+        token: string;
+    }): Promise<{
+        isValid: boolean;
+    }>;
 }

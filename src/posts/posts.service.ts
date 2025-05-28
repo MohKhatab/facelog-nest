@@ -27,7 +27,9 @@ export class PostsService {
   }
 
   async findAll(): Promise<Post[]> {
-    return await this.postModel.find({});
+    return await this.postModel
+      .find({})
+      .populate('poster', 'firstName lastName');
   }
 
   async findOne(id: string): Promise<Post | null> {

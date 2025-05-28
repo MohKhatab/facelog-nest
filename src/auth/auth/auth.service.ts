@@ -15,6 +15,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
+
   async login(email: string, password: string): Promise<string> {
     const user = await this.userModel.findOne({ email: email }).lean();
     if (!user)
@@ -34,5 +35,18 @@ export class AuthService {
     return await this.jwtService.signAsync(payload, {
       secret: this.configService.get('JWT_SECRET'),
     });
+  }
+
+  async tokenIsValid(token: string): Promise<boolean> {
+    try {
+      await this.jwtService.verifyAsync(token, {
+        secret: this.configService.get('JWT_SECRET'),
+      });
+      return true;
+    } catch (err) {
+      console.log('TOKEN VALIDATION CHECK ERROR');
+      console.log(err);
+      return false;
+    }
   }
 }

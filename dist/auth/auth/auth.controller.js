@@ -28,6 +28,9 @@ let AuthController = class AuthController {
             token: token,
         };
     }
+    async validateToken({ token }) {
+        return { isValid: await this.authService.tokenIsValid(token) };
+    }
 };
 exports.AuthController = AuthController;
 __decorate([
@@ -37,6 +40,13 @@ __decorate([
     __metadata("design:paramtypes", [login_user_dto_1.LoginUserDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "loginUser", null);
+__decorate([
+    (0, common_1.Post)('/validate'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "validateToken", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

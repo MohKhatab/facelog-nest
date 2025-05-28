@@ -30,7 +30,9 @@ let PostsService = class PostsService {
         return newPost;
     }
     async findAll() {
-        return await this.postModel.find({});
+        return await this.postModel
+            .find({})
+            .populate('poster', 'firstName lastName');
     }
     async findOne(id) {
         return await this.postModel.findById(id);

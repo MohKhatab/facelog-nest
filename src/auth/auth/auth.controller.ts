@@ -15,4 +15,9 @@ export class AuthController {
       token: token,
     };
   }
+
+  @Post('/validate')
+  async validateToken(@Body() { token }: { token: string }) {
+    return { isValid: await this.authService.tokenIsValid(token) };
+  }
 }

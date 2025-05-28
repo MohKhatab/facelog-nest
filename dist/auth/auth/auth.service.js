@@ -41,6 +41,19 @@ let AuthService = class AuthService {
             secret: this.configService.get('JWT_SECRET'),
         });
     }
+    async tokenIsValid(token) {
+        try {
+            await this.jwtService.verifyAsync(token, {
+                secret: this.configService.get('JWT_SECRET'),
+            });
+            return true;
+        }
+        catch (err) {
+            console.log('TOKEN VALIDATION CHECK ERROR');
+            console.log(err);
+            return false;
+        }
+    }
 };
 exports.AuthService = AuthService;
 __decorate([
