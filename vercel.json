@@ -1,6 +1,6 @@
 {
   "version": 2,
-
+  "trailingSlash": false,
   "builds": [
     {
       "src": "dist/main.js",
@@ -9,9 +9,11 @@
   ],
   "routes": [
     {
+      "handle": "cors"
+    },
+    {
       "src": "/(.*)",
-      "dest": "dist/main.js",
-      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"]
+      "dest": "/dist/main.js"
     }
   ]
 }
