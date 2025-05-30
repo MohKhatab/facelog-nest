@@ -45,18 +45,14 @@ let PostsService = class PostsService {
             throw new common_1.NotFoundException('Post does not exist');
         if (post.poster.toString() !== reqUserId)
             throw new common_1.ForbiddenException('You can only edit your own posts');
-        const newImagesCount = files.length;
+        const newImagesCount = files?.length || 0;
         const removedImagesCount = updatePostDto?.imagesToRemove?.length || 0;
         const totalCurrImages = post.images.length;
-        console.log('images to remove');
-        console.log(newImagesCount);
-        console.log(removedImagesCount);
-        console.log(totalCurrImages);
         const finalImageCount = totalCurrImages + newImagesCount - removedImagesCount;
         if (finalImageCount < 1 || finalImageCount > 5) {
             throw new common_1.BadRequestException('Posts must have 1-5 images');
         }
-        if (updatePostDto.imagesToRemove) {
+        if (updatePostDto.imagesToRemove && updatePostDto.imagesToRemove.length) {
             const imagesToRemove = updatePostDto.imagesToRemove;
             post.images = post.images.filter((img) => !imagesToRemove.includes(img));
             await this.uploadService.deleteMultipleImages(imagesToRemove);
