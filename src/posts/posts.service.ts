@@ -56,6 +56,10 @@ export class PostsService {
     const newImagesCount = files.length;
     const removedImagesCount = updatePostDto?.imagesToRemove?.length || 0;
     const totalCurrImages = post.images.length;
+    console.log('images to remove');
+    console.log(newImagesCount);
+    console.log(removedImagesCount);
+    console.log(totalCurrImages);
 
     const finalImageCount =
       totalCurrImages + newImagesCount - removedImagesCount;
@@ -67,17 +71,9 @@ export class PostsService {
     if (updatePostDto.imagesToRemove) {
       const imagesToRemove = updatePostDto.imagesToRemove;
 
-      if (typeof updatePostDto.imagesToRemove === 'string') {
-        post.images = post.images.filter((img) => img !== imagesToRemove);
-        await this.uploadService.deleteImage(imagesToRemove as string);
-      } else {
-        post.images = post.images.filter(
-          (img) => !imagesToRemove.includes(img),
-        );
-        await this.uploadService.deleteMultipleImages(
-          imagesToRemove as string[],
-        );
-      }
+      post.images = post.images.filter((img) => !imagesToRemove.includes(img));
+
+      await this.uploadService.deleteMultipleImages(imagesToRemove);
     }
 
     const uploadItems = files.map((file) => ({

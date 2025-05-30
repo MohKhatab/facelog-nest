@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import { IsArray, IsOptional, IsString } from 'class-validator';
 
 export class UpdatePostDto {
@@ -10,6 +11,10 @@ export class UpdatePostDto {
   description?: string;
 
   @IsArray()
+  @IsString({ each: true })
+  @Transform(({ value }) =>
+    typeof value === 'string' ? [value] : (value as string[]),
+  )
   @IsOptional()
-  imagesToRemove?: string | string[];
+  imagesToRemove?: string[];
 }

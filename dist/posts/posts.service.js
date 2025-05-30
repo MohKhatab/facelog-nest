@@ -46,6 +46,10 @@ let PostsService = class PostsService {
         const newImagesCount = files.length;
         const removedImagesCount = updatePostDto?.imagesToRemove?.length || 0;
         const totalCurrImages = post.images.length;
+        console.log('images to remove');
+        console.log(newImagesCount);
+        console.log(removedImagesCount);
+        console.log(totalCurrImages);
         const finalImageCount = totalCurrImages + newImagesCount - removedImagesCount;
         if (finalImageCount < 1 || finalImageCount > 5) {
             throw new common_1.BadRequestException('Posts must have 1-5 images');
