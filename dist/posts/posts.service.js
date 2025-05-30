@@ -37,10 +37,39 @@ let PostsService = class PostsService {
     async findOne(id) {
         return await this.postModel.findById(id);
     }
-    async update(id, updatePostDto) {
-        return await this.postModel.findByIdAndUpdate(id, updatePostDto, {
-            new: true,
-        });
+    async update(id, updatePostDto, files, reqUserId) {
+        const post = await this.postModel.findById(id);
+        if (!post)
+            throw new common_1.NotFoundException('Post does not exist');
+        if (post.poster.toString() !== reqUserId)
+            throw new common_1.ForbiddenException('You can only edit your own posts');
+        const newImagesCount = files.length;
+        const removedImagesCount = updatePostDto?.imagesToRemove?.length || 0;
+        const totalCurrImages = post.images.length;
+        const finalImageCount = totalCurrImages + newImagesCount - removedImagesCount;
+        if (finalImageCount < 1 || finalImageCount > 5) {
+            throw new common_1.BadRequestException('Posts must have 1-5 images');
+        }
+        if (updatePostDto.imagesToRemove) {
+            const imagesToRemove = updatePostDto.imagesToRemove;
+            post.images = post.images.filter((img) => !imagesToRemove.includes(img));
+            await this.uploadService.deleteMultipleImages(imagesToRemove);
+        }
+        const uploadItems = files.map((file) => ({
+            stream: file.buffer,
+            fileName: `${Date.now()}-${file.originalname}`,
+        }));
+        if (files) {
+            const urls = await this.uploadService.uploadMultipleFiles(uploadItems);
+            post.images = [...post.images, ...urls];
+        }
+        const { title, description } = updatePostDto;
+        if (title !== undefined)
+            post.title = title;
+        if (description !== undefined)
+            post.description = description;
+        await post.save();
+        return post;
     }
     async remove(id) {
         const postToDelete = await this.postModel.findById(id);

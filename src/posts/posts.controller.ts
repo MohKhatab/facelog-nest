@@ -27,16 +27,6 @@ export class PostsController {
     private readonly uploadService: UploadService,
   ) {}
 
-  // @UseGuards(AuthGuard)
-  // @Post()
-  // create(
-  //   @Body() createPostDto: CreatePostDto,
-  //   @Req() req: AuthenticatedRequest,
-  // ) {
-  //   const userData = req.user;
-  //   return this.postsService.create(createPostDto, String(userData.sub));
-  // }
-
   @UseGuards(AuthGuard)
   @Post()
   @UseInterceptors(FilesInterceptor('files'))
@@ -45,8 +35,8 @@ export class PostsController {
     @Req() req: AuthenticatedRequest,
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
-    if (files.length < 1) {
-      throw new BadRequestException('Please upload at least one image');
+    if (files.length < 1 || files.length > 5) {
+      throw new BadRequestException('You must upload 1-5 files');
     }
 
     const uploadItems = files.map((file) => ({
@@ -70,9 +60,16 @@ export class PostsController {
     return this.postsService.findOne(id);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    return this.postsService.update(id, updatePostDto);
+  @UseInterceptors(FilesInterceptor('files'))
+  update(
+    @Param('id') id: string,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+    @Req() req: AuthenticatedRequest,
+    @Body() updatePostDto: UpdatePostDto,
+  ) {
+    return this.postsService.update(id, updatePostDto, files, req.user.sub);
   }
 
   @Delete(':id')
