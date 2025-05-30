@@ -55,13 +55,9 @@ export class PostsService {
       throw new ForbiddenException('You can only edit your own posts');
 
     // Check total length of images after edit
-    const newImagesCount = files.length;
+    const newImagesCount = files?.length || 0;
     const removedImagesCount = updatePostDto?.imagesToRemove?.length || 0;
     const totalCurrImages = post.images.length;
-    console.log('images to remove');
-    console.log(newImagesCount);
-    console.log(removedImagesCount);
-    console.log(totalCurrImages);
 
     const finalImageCount =
       totalCurrImages + newImagesCount - removedImagesCount;
@@ -70,7 +66,7 @@ export class PostsService {
       throw new BadRequestException('Posts must have 1-5 images');
     }
 
-    if (updatePostDto.imagesToRemove) {
+    if (updatePostDto.imagesToRemove && updatePostDto.imagesToRemove.length) {
       const imagesToRemove = updatePostDto.imagesToRemove;
 
       post.images = post.images.filter((img) => !imagesToRemove.includes(img));
