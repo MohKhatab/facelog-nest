@@ -28,8 +28,8 @@ let PostsController = class PostsController {
         this.uploadService = uploadService;
     }
     async create(createPostDto, req, files) {
-        if (files.length < 1) {
-            throw new common_1.BadRequestException('Please upload at least one image');
+        if (files.length < 1 || files.length > 5) {
+            throw new common_1.BadRequestException('You must upload 1-5 files');
         }
         const uploadItems = files.map((file) => ({
             stream: file.buffer,
@@ -45,8 +45,8 @@ let PostsController = class PostsController {
     findOne(id) {
         return this.postsService.findOne(id);
     }
-    update(id, updatePostDto) {
-        return this.postsService.update(id, updatePostDto);
+    update(id, files, req, updatePostDto) {
+        return this.postsService.update(id, updatePostDto, files, req.user.sub);
     }
     remove(id) {
         return this.postsService.remove(id);
@@ -78,11 +78,15 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostsController.prototype, "findOne", null);
 __decorate([
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Patch)(':id'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('files')),
     __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
+    __param(1, (0, common_1.UploadedFiles)()),
+    __param(2, (0, common_1.Req)()),
+    __param(3, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_post_dto_1.UpdatePostDto]),
+    __metadata("design:paramtypes", [String, Array, Object, update_post_dto_1.UpdatePostDto]),
     __metadata("design:returntype", void 0)
 ], PostsController.prototype, "update", null);
 __decorate([

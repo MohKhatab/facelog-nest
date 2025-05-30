@@ -10,10 +10,10 @@ export declare class PostsController {
     create(createPostDto: CreatePostDto, req: AuthenticatedRequest, files: Array<Express.Multer.File>): Promise<import("./schemas/post.schema").Post>;
     findAll(): Promise<import("./schemas/post.schema").Post[]>;
     findOne(id: string): Promise<import("./schemas/post.schema").Post | null>;
-    update(id: string, updatePostDto: UpdatePostDto): Promise<(import("mongoose").Document<unknown, {}, import("./schemas/post.schema").Post, {}> & import("./schemas/post.schema").Post & {
+    update(id: string, files: Array<Express.Multer.File>, req: AuthenticatedRequest, updatePostDto: UpdatePostDto): Promise<import("mongoose").Document<unknown, {}, import("./schemas/post.schema").Post, {}> & import("./schemas/post.schema").Post & {
         _id: import("mongoose").Types.ObjectId;
     } & {
         __v: number;
-    }) | null>;
+    }>;
     remove(id: string): Promise<void>;
 }
