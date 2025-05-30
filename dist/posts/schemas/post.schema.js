@@ -14,7 +14,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 let Post = class Post {
     title;
-    description;
+    content;
     poster;
     images;
 };
@@ -24,9 +24,9 @@ __decorate([
     __metadata("design:type", String)
 ], Post.prototype, "title", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: String, required: true }),
-    __metadata("design:type", String)
-], Post.prototype, "description", void 0);
+    (0, mongoose_1.Prop)({ type: Object, required: true }),
+    __metadata("design:type", Object)
+], Post.prototype, "content", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ type: mongoose_2.default.Schema.Types.ObjectId, ref: 'User', required: true }),
     __metadata("design:type", mongoose_2.default.Types.ObjectId)

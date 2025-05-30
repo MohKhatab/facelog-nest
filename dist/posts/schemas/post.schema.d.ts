@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 export declare class Post {
     title: string;
-    description: string;
+    content: object;
     poster: mongoose.Types.ObjectId;
     images: string[];
 }

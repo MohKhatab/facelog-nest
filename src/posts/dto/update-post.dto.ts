@@ -6,9 +6,13 @@ export class UpdatePostDto {
   @IsOptional()
   title?: string;
 
+  // @IsString()
+  // @IsOptional()
+  // description?: string;
+
   @IsString()
   @IsOptional()
-  description?: string;
+  content?: string;
 
   @IsArray()
   @IsString({ each: true })
