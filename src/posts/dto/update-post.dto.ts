@@ -11,5 +11,5 @@ export class UpdatePostDto {
 
   @IsArray()
   @IsOptional()
-  imagesToRemove?: string[];
+  imagesToRemove?: string | string[];
 }

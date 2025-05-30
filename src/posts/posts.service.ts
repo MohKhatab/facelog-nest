@@ -67,9 +67,17 @@ export class PostsService {
     if (updatePostDto.imagesToRemove) {
       const imagesToRemove = updatePostDto.imagesToRemove;
 
-      post.images = post.images.filter((img) => !imagesToRemove.includes(img));
-
-      await this.uploadService.deleteMultipleImages(imagesToRemove);
+      if (typeof updatePostDto.imagesToRemove === 'string') {
+        post.images = post.images.filter((img) => img !== imagesToRemove);
+        await this.uploadService.deleteImage(imagesToRemove as string);
+      } else {
+        post.images = post.images.filter(
+          (img) => !imagesToRemove.includes(img),
+        );
+        await this.uploadService.deleteMultipleImages(
+          imagesToRemove as string[],
+        );
+      }
     }
 
     const uploadItems = files.map((file) => ({
