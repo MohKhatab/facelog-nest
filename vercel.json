@@ -9,9 +9,6 @@
   ],
   "routes": [
     {
-      "handle": "cors"
-    },
-    {
       "src": "/(.*)",
       "dest": "/dist/main.js"
     }
