@@ -22,8 +22,10 @@ let PostsService = class PostsService {
         this.uploadService = uploadService;
     }
     async create(createPostDto, userId, urls) {
+        const parsedContent = JSON.parse(createPostDto.content);
         const newPost = await this.postModel.create({
             ...createPostDto,
+            content: parsedContent,
             poster: userId,
             images: urls,
         });
@@ -67,11 +69,11 @@ let PostsService = class PostsService {
             const urls = await this.uploadService.uploadMultipleFiles(uploadItems);
             post.images = [...post.images, ...urls];
         }
-        const { title, description } = updatePostDto;
+        const { title, content } = updatePostDto;
         if (title !== undefined)
             post.title = title;
-        if (description !== undefined)
-            post.description = description;
+        if (content !== undefined)
+            post.content = JSON.parse(content);
         await post.save();
         return post;
     }

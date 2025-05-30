@@ -14,7 +14,7 @@ const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 class UpdatePostDto {
     title;
-    description;
+    content;
     imagesToRemove;
 }
 exports.UpdatePostDto = UpdatePostDto;
@@ -27,7 +27,7 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], UpdatePostDto.prototype, "description", void 0);
+], UpdatePostDto.prototype, "content", void 0);
 __decorate([
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.IsString)({ each: true }),

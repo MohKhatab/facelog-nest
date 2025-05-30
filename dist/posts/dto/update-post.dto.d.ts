@@ -1,5 +1,5 @@
 export declare class UpdatePostDto {
     title?: string;
-    description?: string;
+    content?: string;
     imagesToRemove?: string[];
 }

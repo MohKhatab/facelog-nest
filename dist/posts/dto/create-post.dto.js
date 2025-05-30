@@ -13,7 +13,7 @@ exports.CreatePostDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreatePostDto {
     title;
-    description;
+    content;
 }
 exports.CreatePostDto = CreatePostDto;
 __decorate([
@@ -23,7 +23,7 @@ __decorate([
 ], CreatePostDto.prototype, "title", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsString)({ message: 'Content of the body must be a stringified json' }),
     __metadata("design:type", String)
-], CreatePostDto.prototype, "description", void 0);
+], CreatePostDto.prototype, "content", void 0);
 //# sourceMappingURL=create-post.dto.js.map

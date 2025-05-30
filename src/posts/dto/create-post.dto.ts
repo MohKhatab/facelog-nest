@@ -6,6 +6,10 @@ export class CreatePostDto {
   title: string;
 
   @IsNotEmpty()
-  @IsString()
-  description: string;
+  @IsString({ message: 'Content of the body must be a stringified json' })
+  content: string;
+
+  // @IsNotEmpty()
+  // @IsString()
+  // description: string;
 }

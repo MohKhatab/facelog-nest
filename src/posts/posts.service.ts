@@ -22,8 +22,10 @@ export class PostsService {
     userId: string,
     urls: string[],
   ): Promise<Post> {
+    const parsedContent = JSON.parse(createPostDto.content) as object;
     const newPost = await this.postModel.create({
       ...createPostDto,
+      content: parsedContent,
       poster: userId,
       images: urls,
     });
@@ -86,9 +88,10 @@ export class PostsService {
     }
 
     //rest of the updates
-    const { title, description } = updatePostDto;
+    const { title, content } = updatePostDto;
     if (title !== undefined) post.title = title;
-    if (description !== undefined) post.description = description;
+    if (content !== undefined) post.content = JSON.parse(content) as object;
+    // if (description !== undefined) post.description = description;
 
     await post.save();
     return post;
