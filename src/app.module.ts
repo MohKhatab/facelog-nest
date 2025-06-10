@@ -5,6 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { AuthModule } from './auth/auth/auth.module';
 import { PostsModule } from './posts/posts.module';
+import { CommentModule } from './comment/comment.module';
+import { InteractionsModule } from './interactions/interactions.module';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { PostsModule } from './posts/posts.module';
       inject: [ConfigService],
     }),
     PostsModule,
+    CommentModule,
+    InteractionsModule,
   ],
 })
 export class AppModule {}

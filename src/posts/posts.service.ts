@@ -8,12 +8,15 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Post } from './schemas/post.schema';
-import mongoose, { Model } from 'mongoose';
+import mongoose, { Model, Types } from 'mongoose';
 import { UploadService } from 'src/upload/upload.service';
+import { Interaction } from 'src/interactions/schemas/interaction.schema';
 
 @Injectable()
 export class PostsService {
   @InjectModel(Post.name) private readonly postModel: Model<Post>;
+  @InjectModel(Interaction.name)
+  private readonly interactionModel: Model<Interaction>;
 
   constructor(private readonly uploadService: UploadService) {}
 
@@ -33,10 +36,26 @@ export class PostsService {
     return newPost;
   }
 
-  async findAll(): Promise<Post[]> {
-    return await this.postModel
+  async findAll(userId: Types.ObjectId | string): Promise<Post[]> {
+    const posts = await this.postModel
       .find({})
-      .populate('poster', 'firstName lastName');
+      .populate('poster', 'firstName lastName')
+      .lean();
+
+    const postIds = posts.map((p) => p._id);
+
+    const dislikedPostIds = await this.interactionModel
+      .find({ postId: { $in: postIds }, userId: userId, type: 'dislike' })
+      .distinct('postId');
+
+    const dislikedSet = new Set(dislikedPostIds.map((id) => id.toString()));
+
+    const postsWithLikes = posts.map((post) => ({
+      ...post,
+      isDisliked: dislikedSet.has(post._id.toString()),
+    }));
+
+    return postsWithLikes;
   }
 
   async findOne(id: string): Promise<Post | null> {

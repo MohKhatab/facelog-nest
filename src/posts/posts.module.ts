@@ -6,6 +6,10 @@ import { Post, postSchema } from './schemas/post.schema';
 import { AuthModule } from 'src/auth/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { UploadModule } from 'src/upload/upload.module';
+import {
+  Interaction,
+  interactionSchema,
+} from 'src/interactions/schemas/interaction.schema';
 
 @Module({
   imports: [
@@ -16,6 +20,12 @@ import { UploadModule } from 'src/upload/upload.module';
       {
         name: Post.name,
         schema: postSchema,
+      },
+    ]),
+    MongooseModule.forFeature([
+      {
+        name: Interaction.name,
+        schema: interactionSchema,
       },
     ]),
   ],

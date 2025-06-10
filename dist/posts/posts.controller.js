@@ -39,8 +39,8 @@ let PostsController = class PostsController {
         const userData = req.user;
         return this.postsService.create(createPostDto, String(userData.sub), urls);
     }
-    findAll() {
-        return this.postsService.findAll();
+    findAll(req) {
+        return this.postsService.findAll(req.user.sub);
     }
     findOne(id) {
         return this.postsService.findOne(id);
@@ -65,9 +65,11 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PostsController.prototype, "create", null);
 __decorate([
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Get)(),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], PostsController.prototype, "findAll", null);
 __decorate([

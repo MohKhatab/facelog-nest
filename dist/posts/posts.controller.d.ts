@@ -8,7 +8,7 @@ export declare class PostsController {
     private readonly uploadService;
     constructor(postsService: PostsService, uploadService: UploadService);
     create(createPostDto: CreatePostDto, req: AuthenticatedRequest, files: Array<Express.Multer.File>): Promise<import("./schemas/post.schema").Post>;
-    findAll(): Promise<import("./schemas/post.schema").Post[]>;
+    findAll(req: AuthenticatedRequest): Promise<import("./schemas/post.schema").Post[]>;
     findOne(id: string): Promise<import("./schemas/post.schema").Post | null>;
     update(id: string, files: Array<Express.Multer.File>, req: AuthenticatedRequest, updatePostDto: UpdatePostDto): Promise<import("mongoose").Document<unknown, {}, import("./schemas/post.schema").Post, {}> & import("./schemas/post.schema").Post & {
         _id: import("mongoose").Types.ObjectId;

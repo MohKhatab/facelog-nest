@@ -6,8 +6,11 @@ export class Post {
   @Prop({ type: String, required: true })
   title: string;
 
-  // @Prop({ type: String, required: true })
-  // description: string;
+  @Prop({ type: Number, required: true, default: 0 })
+  commentCount: number;
+
+  @Prop({ type: Number, required: true, default: 0 })
+  interactionCount: number;
 
   @Prop({ type: Object, required: true })
   content: object;

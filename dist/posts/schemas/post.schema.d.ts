@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 export declare class Post {
     title: string;
+    commentCount: number;
+    interactionCount: number;
     content: object;
     poster: mongoose.Types.ObjectId;
     images: string[];

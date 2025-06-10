@@ -15,6 +15,7 @@ const post_schema_1 = require("./schemas/post.schema");
 const auth_module_1 = require("../auth/auth/auth.module");
 const config_1 = require("@nestjs/config");
 const upload_module_1 = require("../upload/upload.module");
+const interaction_schema_1 = require("../interactions/schemas/interaction.schema");
 let PostsModule = class PostsModule {
 };
 exports.PostsModule = PostsModule;
@@ -28,6 +29,12 @@ exports.PostsModule = PostsModule = __decorate([
                 {
                     name: post_schema_1.Post.name,
                     schema: post_schema_1.postSchema,
+                },
+            ]),
+            mongoose_1.MongooseModule.forFeature([
+                {
+                    name: interaction_schema_1.Interaction.name,
+                    schema: interaction_schema_1.interactionSchema,
                 },
             ]),
         ],

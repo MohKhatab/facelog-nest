@@ -50,9 +50,10 @@ export class PostsController {
     return this.postsService.create(createPostDto, String(userData.sub), urls);
   }
 
+  @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.postsService.findAll();
+  findAll(@Req() req: AuthenticatedRequest) {
+    return this.postsService.findAll(req.user.sub);
   }
 
   @Get(':id')

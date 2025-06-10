@@ -13,6 +13,8 @@ const config_1 = require("@nestjs/config");
 const mongoose_1 = require("@nestjs/mongoose");
 const auth_module_1 = require("./auth/auth/auth.module");
 const posts_module_1 = require("./posts/posts.module");
+const comment_module_1 = require("./comment/comment.module");
+const interactions_module_1 = require("./interactions/interactions.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -34,6 +36,8 @@ exports.AppModule = AppModule = __decorate([
                 inject: [config_1.ConfigService],
             }),
             posts_module_1.PostsModule,
+            comment_module_1.CommentModule,
+            interactions_module_1.InteractionsModule,
         ],
     })
 ], AppModule);

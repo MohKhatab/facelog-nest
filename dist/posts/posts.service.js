@@ -15,9 +15,11 @@ const mongoose_1 = require("@nestjs/mongoose");
 const post_schema_1 = require("./schemas/post.schema");
 const mongoose_2 = require("mongoose");
 const upload_service_1 = require("../upload/upload.service");
+const interaction_schema_1 = require("../interactions/schemas/interaction.schema");
 let PostsService = class PostsService {
     uploadService;
     postModel;
+    interactionModel;
     constructor(uploadService) {
         this.uploadService = uploadService;
     }
@@ -31,10 +33,21 @@ let PostsService = class PostsService {
         });
         return newPost;
     }
-    async findAll() {
-        return await this.postModel
+    async findAll(userId) {
+        const posts = await this.postModel
             .find({})
-            .populate('poster', 'firstName lastName');
+            .populate('poster', 'firstName lastName')
+            .lean();
+        const postIds = posts.map((p) => p._id);
+        const dislikedPostIds = await this.interactionModel
+            .find({ postId: { $in: postIds }, userId: userId, type: 'dislike' })
+            .distinct('postId');
+        const dislikedSet = new Set(dislikedPostIds.map((id) => id.toString()));
+        const postsWithLikes = posts.map((post) => ({
+            ...post,
+            isDisliked: dislikedSet.has(post._id.toString()),
+        }));
+        return postsWithLikes;
     }
     async findOne(id) {
         return await this.postModel.findById(id);
@@ -86,6 +99,10 @@ __decorate([
     (0, mongoose_1.InjectModel)(post_schema_1.Post.name),
     __metadata("design:type", mongoose_2.Model)
 ], PostsService.prototype, "postModel", void 0);
+__decorate([
+    (0, mongoose_1.InjectModel)(interaction_schema_1.Interaction.name),
+    __metadata("design:type", mongoose_2.Model)
+], PostsService.prototype, "interactionModel", void 0);
 exports.PostsService = PostsService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [upload_service_1.UploadService])
